@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Neha! 🎉 (23,456 Wishes Edition)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 50px;
+        }
+
+        canvas#confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* Celebration Counter Badge */
+        .counter-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: #ff2a75;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            z-index: 100;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid #ff4081;
+        }
+
+        /* Floating Balloons */
+        .balloon {
+            position: fixed;
+            width: 40px;
+            height: 50px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            bottom: -60px;
+            animation: float 10s infinite ease-in;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Header / Audio Control */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .music-btn {
+            background: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.05);
+            background: #ff4081;
+            color: #fff;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        h1.title {
+            font-family: 'Sacramento', cursive;
+            font-size: 4.5rem;
+            color: #ff2a75;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        /* Birthday Card */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        /* Avatar / Photo */
+        .avatar-container {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            border: 5px solid #ff4081;
+            padding: 5px;
+            background: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Interactive Cake Section */
+        .cake-container {
+            margin: 30px 0;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .cake {
+            position: relative;
+            width: 160px;
+            height: 100px;
+            background: #f48fb1;
+            border-radius: 10px 10px 0 0;
+            margin: 0 auto;
+            box-shadow: inset 0 -10px 0 #ad1457;
+        }
+
+        .cake::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            width: 140px;
+            height: 20px;
+            background: #f8bbd0;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .candle {
+            width: 12px;
+            height: 35px;
+            background: linear-gradient(to bottom, #ffd54f, #ffb300);
+            position: absolute;
+            top: -55px;
+            left: 74px;
+            border-radius: 3px;
+        }
+
+        .flame {
+            width: 14px;
+            height: 20px;
+            background: #ff5722;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -18px;
+            left: -1px;
+            box-shadow: 0 0 10px #ffeb3b;
+            animation: flicker 0.6s infinite alternate;
+        }
+
+        .flame.off {
+            display: none;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        /* Action Buttons */
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #ff4081, #ff6e40);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3deg);
+            box-shadow: 0 8px 25px rgba(255, 64, 129, 0.6);
+        }
+
+        /* Gift Box Section */
+        .gift-section {
+            margin-top: 40px;
+        }
+
+        .gift-box {
+            font-size: 70px;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .surprise-msg {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff3e0;
+            border: 2px dashed #ff9800;
+            border-radius: 12px;
+            color: #e65100;
+            font-weight: 600;
+            animation: popIn 0.5s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Interactive Wishes Wall */
+        .wishes-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-top: 40px;
+        }
+
+        .wishes-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .wish-input-group {
+            display: flex;
+            gap: 10px;
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+
+        .wish-input-group input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .wish-input-group input:focus {
+            border-color: #ff4081;
+        }
+
+        .wish-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .wish-card {
+            background: #fce4ec;
+            padding: 12px 18px;
+            border-radius: 12px;
+            color: #880e4f;
+            font-size: 0.95rem;
+            animation: fadeIn 0.4s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti"></canvas>
+
+    <!-- 23,456 Wishes Badge -->
+    <div class="counter-badge">
+        ✨ <span id="counterValue">23,456</span> Wishes Active!
+    </div>
+
+    <!-- Floating Background Balloons -->
+    <div class="balloon" style="left: 10%; background: #ff4081; animation-duration: 8s;"></div>
+    <div class="balloon" style="left: 30%; background: #ffeb3b; animation-duration: 12s; animation-delay: 1s;"></div>
+    <div class="balloon" style="left: 60%; background: #00e676; animation-duration: 9s; animation-delay: 2s;"></div>
+    <div class="balloon" style="left: 85%; background: #00b0ff; animation-duration: 11s; animation-delay: 0.5s;"></div>
+
+    <header>
+        <div style="font-weight: 700; color: #ff2a75; font-size: 1.2rem;">Neha's Special Day ✨</div>
+        <button class="music-btn" id="musicToggle" onclick="toggleMusic()">🎵 Play Music</button>
+    </header>
+
+    <div class="container">
+        <!-- Main Card -->
+        <div class="card">
+            <div class="avatar-container">
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Neha" alt="Neha's Avatar">
+            </div>
+
+            <h1 class="title">Happy Birthday, Neha!</h1>
+            <p class="subtitle">Sending you <strong>23,456</strong> happy wishes, endless joy, and all the love in the world!</p>
+
+            <!-- Interactive Cake -->
+            <div class="cake-container" onclick="blowCandle()" title="Click to blow out the candle!">
+                <div class="cake">
+                    <div class="candle">
+                        <div class="flame" id="flame"></div>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-size: 0.85rem; color: #888; margin-top: -10px;">(Click the candle to blow it out!)</p>
+
+            <!-- Action Buttons -->
+            <div class="btn-group">
+                <button class="action-btn" onclick="trigger23456Burst()">💥 Launch 23,456 Confetti!</button>
+                <button class="action-btn" onclick="blowCandle()">🕯️ Blow Candle</button>
+            </div>
+
+            <!-- Gift Unboxing -->
+            <div class="gift-section">
+                <p style="font-weight: 600; color: #666; margin-bottom: 5px;">You have a secret gift!</p>
+                <div class="gift-box" onclick="openGift()" id="giftBox">🎁</div>
+                <div class="surprise-msg" id="surpriseMsg">
+                    🌟 Surprise Gift: 23,456 tons of happiness, great health, and incredible success! Stay amazing, Neha! 💖
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Wishes Board -->
+        <div class="wishes-section">
+            <h2>Leave a Wish for Neha 💌</h2>
+            <div class="wish-input-group">
+                <input type="text" id="wishInput" placeholder="Type your birthday wish here...">
+                <button class="action-btn" style="padding: 12px 20px;" onclick="addWish()">Send</button>
+            </div>
+            <div class="wish-list" id="wishList">
+                <div class="wish-card">🌸 "Wish #23,456: May all your dreams come true this year, Neha!"</div>
+                <div class="wish-card">✨ "Wishing you the happiest of birthdays!"</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* === 1. CANDLE BLOWOUT LOGIC === */
+        let candleLit = true;
+        function blowCandle() {
+            const flame = document.getElementById('flame');
+            if (candleLit) {
+                flame.classList.add('off');
+                candleLit = false;
+                trigger23456Burst();
+            } else {
+                flame.classList.remove('off');
+                candleLit = true;
+            }
+        }
+
+        /* === 2. GIFT BOX UNBOXING LOGIC === */
+        function openGift() {
+            const gift = document.getElementById('giftBox');
+            const msg = document.getElementById('surpriseMsg');
+            gift.style.transform = "scale(1.4) rotate(20deg)";
+            setTimeout(() => {
+                gift.innerText = "👐";
+                msg.style.display = "block";
+                trigger23456Burst();
+            }, 300);
+        }
+
+        /* === 3. WISHES BOARD LOGIC === */
+        let wishCounter = 23456;
+        function addWish() {
+            const input = document.getElementById('wishInput');
+            const text = input.value.trim();
+            if (text !== "") {
+                wishCounter++;
+                document.getElementById('counterValue').innerText = wishCounter.toLocaleString();
+                const list = document.getElementById('wishList');
+                const newWish = document.createElement('div');
+                newWish.className = 'wish-card';
+                newWish.innerText = `💖 Wish #${wishCounter.toLocaleString()}: ${text}`;
+                list.prepend(newWish);
+                input.value = "";
+                trigger23456Burst();
+            }
+        }
+
+        /* === 4. MUSIC SYNTHESIZER (Web Audio API) === */
+        let isPlaying = false;
+        let audioCtx = null;
+        let timeoutId = null;
+
+        const notes = [
+            { note: 261.63, duration: 0.4 }, { note: 261.63, duration: 0.4 },
+            { note: 293.66, duration: 0.8 }, { note: 261.63, duration: 0.8 },
+            { note: 349.23, duration: 0.8 }, { note: 329.63, duration: 1.2 },
+            { note: 261.63, duration: 0.4 }, { note: 261.63, duration: 0.4 },
+            { note: 293.66, duration: 0.8 }, { note: 261.63, duration: 0.8 },
+            { note: 392.00, duration: 0.8 }, { note: 349.23, duration: 1.2 }
+        ];
+
+        function playNote(freq, duration) {
+            if (!isPlaying || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function playTune(index = 0) {
+            if (!isPlaying) return;
+            if (index >= notes.length) index = 0;
+            
+            playNote(notes[index].note, notes[index].duration);
+            timeoutId = setTimeout(() => {
+                playTune(index + 1);
+            }, notes[index].duration * 600);
+        }
+
+        function toggleMusic() {
+            const btn = document.getElementById('musicToggle');
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (!isPlaying) {
+                isPlaying = true;
+                btn.innerText = "⏸️ Pause Music";
+                playTune();
+            } else {
+                isPlaying = false;
+                clearTimeout(timeoutId);
+                btn.innerText = "🎵 Play Music";
+            }
+        }
+
+        /* === 5. MASSIVE 23,456 PARTICLE CONFETTI ENGINE === */
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const MAX_ACTIVE_PARTICLES = 1500; // Optimal performance limit for smooth 60fps rendering
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function createParticle() {
+            const colors = ['#ff4081', '#00e676', '#ffeb3b', '#00b0ff', '#e040fb', '#ff6e40'];
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                vx: (Math.random() - 0.5) * 8,
+                vy: Math.random() * 5 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                size: Math.random() * 6 + 3,
+                rotation: Math.random() * 360,
+                rotationSpeed: (Math.random() - 0.5) * 10
+            };
+        }
+
+        function trigger23456Burst() {
+            // Refill particle queue up to performance cap for endless high-density waves
+            for (let i = 0; i < 500; i++) {
+                if (particles.length < MAX_ACTIVE_PARTICLES) {
+                    particles.push(createParticle());
+                }
+            }
+        }
+
+        // Initialize background shower representing 23,456 pieces
+        for (let i = 0; i < 800; i++) {
+            particles.push(createParticle());
+        }
+
+        function updateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rotation += p.rotationSpeed;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+
+                // Recycle particles to maintain continuous 23,456 theme stream
+                if (p.y > canvas.height) {
+                    p.y = -10;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+            requestAnimationFrame(updateConfetti);
+        }
+        updateConfetti();
+    </script>
+</body>
+</html>
